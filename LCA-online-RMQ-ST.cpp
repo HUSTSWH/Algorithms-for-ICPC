@@ -1,3 +1,9 @@
+/*
+An online algorithm to solve Least Common Ancestor(LCA) of a tree
+Time complexity: O(n log n) for pre-processing, O(1) for each query
+Memory cost: maxn * (6 + 2 * maxh) * sizeof(int) //maxn=50000: cost = 8.0MB
+2017/4/25
+*/
 #include <algorithm>
 #include <vector>
 
