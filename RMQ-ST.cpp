@@ -1,15 +1,22 @@
+/*
+An algorithm to do with Range Minimum/Maximum Query
+Time complexity: O(n log n) for pre-process
+                 O(1) for each query
+Memory cost: maxn * (1+ maxh) * sizeof(int) 
+*/
 #include <algorithm>
 using namespace std;
 
 const int maxn = 50000+10;
-int rmq[maxn][19];
+const int maxh = 16 // 2^maxh > maxn
+int rmq[maxn][maxh];
 int value[maxn];
 
 void rmqinit()
 {
     for(int i=0; i<pos; i++)
         rmq[i][0]=i;
-    for(int i=1; i<19; i++)
+    for(int i=1; i<maxh; i++)
     for(int j=0; j+(1<<i) <= pos; j++)//It is important to use "<=" instead of "<"
         if(value[ rmq[j][i-1] ] < value[ rmq[j+(1<<(i-1))][i-1] ])
             rmq[j][i] = rmq[j][i-1];
