@@ -1,5 +1,8 @@
-#include <cstdio>
-#include <cstring>
+/*
+An off-line method for Least Common Ancestor(LCA)
+Time complexity: O(n + q) for total.
+*/
+
 #include <algorithm>
 #include <vector>
 using namespace std;
