@@ -58,6 +58,5 @@ int query(int node, int s, int t, int l ,int r)
     int m = (s+t) >> 1;
     int a = query(lson, l, r);
     int b = query(rson, l, r);
-    seg[node]=min(seg[node<<1], seg[node<<1|1]);
     return min(a,b);
 }
