@@ -4,6 +4,7 @@ Time complexity: O( L(T) + max(L(Pi)) + m ) in which:
 P: template string
 T: target string
 m: number of successive matches
+prototype problem: HDU2222
 */
 
 #include <cstdio>
