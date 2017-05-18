@@ -14,7 +14,7 @@ prototype problem: HDU2222
 using namespace std;
 
 const int maxl = 1000000+10,//capacity of Trie(maximum length of P * maximun number of P)
-		  sigma = 26;//number of char elements
+          sigma = 26;//number of char elements
 int trie[maxn][sigma], drop[maxn], top;
 int q[maxn];
 char s[maxn];
@@ -28,7 +28,7 @@ void insert(const char s[], const int tag)
     int i,pos=0;
     for(i=0; s[i]; i++)
         pos = trie[pos][s[i]-'a']?trie[pos][s[i]-'a']:trie[pos][s[i]-'a']=top++;
-	// operation to sign info or index of model string
+    // operation to sign info or index of model string
     wordcnt[pos]++;
     wordtag[pos]=tag;
 }
@@ -37,8 +37,8 @@ void ACinit()
 {
     int qf=0, qe=0;
     for(int i=0; i<sigma; i++)
-		if(trie[0][i])
-			q[qe++]=trie[0][i];
+        if(trie[0][i])
+            q[qe++]=trie[0][i];
     while(qf<qe){
         int x=q[qf++];
         for(int i=0; i<sigma; i++){
@@ -61,11 +61,11 @@ int AC(const char s[])
     for(int i=0; s[i]; i++){
         pos=trie[pos][s[i]-'a'];
         for(int pp=wordcnt[pos]?pos:drop[pos]; pp; pp=drop[pp]){
-			// operation when match happens
-			if(visited[wordtag[pp]])continue;
+            // operation when match happens
+            if(visited[wordtag[pp]])continue;
             ans+=wordcnt[pp];
             visited[wordtag[pp]]=1;
-			// end operation
+            // end operation
         }
     }
     return ans;
