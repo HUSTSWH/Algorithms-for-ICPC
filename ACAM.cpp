@@ -60,7 +60,7 @@ int AC(const char s[])
     int pos=0, ans=0;
     for(int i=0; s[i]; i++){
         pos=trie[pos][s[i]-'a'];
-        for(int pp=pos; pp; pp=drop[pp]){
+        for(int pp=wordcnt[pos]?pos:drop[pos]; pp; pp=drop[pp]){
 			// operation when match happens
 			if(visited[wordtag[pp]])continue;
             ans+=wordcnt[pp];
