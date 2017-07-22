@@ -25,12 +25,12 @@ bool visited[10000+10];
 
 void insert(const char s[], const int tag)
 {
-    int i,pos=0;
-    for(i=0; s[i]; i++)
-        pos = trie[pos][s[i]-'a']?trie[pos][s[i]-'a']:trie[pos][s[i]-'a']=top++;
+    int pos = 0;
+    for(int i=0; s[i]; i++)
+        pos = trie[pos][s[i]-'a']?trie[pos][s[i]-'a']:trie[pos][s[i]-'a'] = top++;
     // operation to sign info or index of model string
     wordcnt[pos]++;
-    wordtag[pos]=tag;
+    wordtag[pos] = tag;
 }
 
 void ACinit()
@@ -41,30 +41,29 @@ void ACinit()
             q[qe++]=trie[0][i];
     while(qf<qe){
         int x=q[qf++];
+		int xf = drop[x];
         for(int i=0; i<sigma; i++){
-            int xf = drop[x];
             if(!trie[x][i]){
                 trie[x][i] = trie[xf][i];
                 continue;
             }
             drop[trie[x][i]] = trie[xf][i];
-            q[qe++]=trie[x][i];
+            q[qe++] = trie[x][i];
         }
-    }
-    for(int i=1; i<top; i++)
-        drop[i]=wordcnt[drop[i]]?drop[i]:drop[drop[i]];
+		drop[x] = wordcnt[xf]?xf:drop[xf];
+    } 
 }
 
 int AC(const char s[])
 {
-    int pos=0, ans=0;
+    int pos = 0, ans = 0;
     for(int i=0; s[i]; i++){
         pos=trie[pos][s[i]-'a'];
         for(int pp=wordcnt[pos]?pos:drop[pos]; pp; pp=drop[pp]){
             // operation when match happens
             if(visited[wordtag[pp]])continue;
-            ans+=wordcnt[pp];
-            visited[wordtag[pp]]=1;
+            ans += wordcnt[pp];
+            visited[wordtag[pp]] = 1;
             // end operation
         }
     }
@@ -88,7 +87,7 @@ int main ()
     while(T--){
         int n;
         scanf("%d",&n);
-        top=1;
+        top = 1;
         for(int i=0; i<n; i++){
             scanf("%s",s);
             insert(s, i+1);
