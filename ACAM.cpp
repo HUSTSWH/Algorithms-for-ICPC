@@ -13,7 +13,7 @@ prototype problem: HDU2222
 #include <queue>
 using namespace std;
 
-const int maxl = 1000000+10,//capacity of Trie(maximum length of P * maximun number of P)
+const int maxn = 1000000+10,//capacity of Trie(maximum length of P * maximun number of P)
           sigma = 26;//number of char elements
 int trie[maxn][sigma], drop[maxn], top;
 int q[maxn];
