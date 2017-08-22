@@ -1,6 +1,6 @@
 /* 
 An implement of Aho-Corasick automaton(AC-AM).
-Time complexity: O( L(T) + max(L(Pi)) + m ) in which:
+Time complexity: O( L(T) + sum(L(Pi)) + m ) in which:
 P: template string
 T: target string
 m: number of successive matches
