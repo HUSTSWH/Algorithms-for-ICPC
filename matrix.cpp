@@ -20,7 +20,7 @@ T gcd(T a, T b)
 }
 
 template<typename T>
-T quickpow(const T &v, const int &n)
+T quickpow(const T &v, const unsigned long long &n)
 {
 	if(n==1) return v;
 	T temp = quickpow(v*v, n>>1);
@@ -49,7 +49,7 @@ public:
             for(int j=0; j<m; j++)
                 data[i][j] = 0;
     }
-    T& at(const int nn, const int mm)
+    T& at(const int nn, const int mm=0)
     {
         return data[nn][mm];
     }

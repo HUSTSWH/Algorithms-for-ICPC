@@ -3,8 +3,6 @@
 #include <algorithm>
 using namespace std;
 
-#define likely(x) __builtin_expect(!!(x), 1)
-#define unlikely(x) __builtin_expect(!!(x), 0)
 const int maxn = 3e4+10;
 
 class pstnode
@@ -49,7 +47,7 @@ pstnode *pstnode::update(const int &s, const int &t, const int &index, const int
     pstnode *temp = pool.alloc();
     *temp = *this;
     temp->sum += val;
-    if(unlikely(t-s == 1)) return temp;
+    if(t-s == 1) return temp;
     int m = (s+t)>>1;
     if(index < m)temp->lson = this->lson->update(s, m, index, val);
     else temp->rson = this->rson->update(m, t, index, val);

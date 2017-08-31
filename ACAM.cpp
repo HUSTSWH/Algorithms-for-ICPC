@@ -92,7 +92,7 @@ int main ()
             scanf("%s",s);
             insert(s, i+1);
         }
-        ACinit();
+        ACinit();  // DON'T MISS THIS LINE!!!
         scanf("%s",s);
         printf("%d\n", AC(s));
         clear();
