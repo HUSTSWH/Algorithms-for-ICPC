@@ -41,7 +41,7 @@ void ACinit()
             q[qe++]=trie[0][i];
     while(qf<qe){
         int x=q[qf++];
-		int xf = drop[x];
+        int xf = drop[x];
         for(int i=0; i<sigma; i++){
             if(!trie[x][i]){
                 trie[x][i] = trie[xf][i];
@@ -50,7 +50,9 @@ void ACinit()
             drop[trie[x][i]] = trie[xf][i];
             q[qe++] = trie[x][i];
         }
-		drop[x] = wordcnt[xf]?xf:drop[xf];
+        drop[x] = wordcnt[xf]?xf:drop[xf];
+        // compress fail pointer to contain only wordtail
+        // Very important! This operation reduces time complexity.
     } 
 }
 
@@ -61,7 +63,10 @@ int AC(const char s[])
         pos=trie[pos][s[i]-'a'];
         for(int pp=wordcnt[pos]?pos:drop[pos]; pp; pp=drop[pp]){
             // operation when match happens
-            if(visited[wordtag[pp]])continue;
+            
+            // Note: if one target string is required to report a match once, use "break"
+            if(visited[wordtag[pp]]) continue; 
+            
             ans += wordcnt[pp];
             visited[wordtag[pp]] = 1;
             // end operation
@@ -87,7 +92,7 @@ int main ()
     while(T--){
         int n;
         scanf("%d",&n);
-        top = 1;
+        top = 1; // DON'T MISS THIS LINE!!!
         for(int i=0; i<n; i++){
             scanf("%s",s);
             insert(s, i+1);
