@@ -1,5 +1,5 @@
 /**
- * FFT Algorithm
+ * NTT Algorithm
  * Time Complexity: O(nlog n)
  * available data range rely on the value of g and modn
  * default range: 
