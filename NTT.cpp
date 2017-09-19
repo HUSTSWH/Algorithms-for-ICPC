@@ -1,3 +1,13 @@
+/**
+ * FFT Algorithm
+ * Time Complexity: O(nlog n)
+ * available data range rely on the value of g and modn
+ * default range: 
+ * * 0 <= ai < 1004535809 (a number slightly bigger than 1e9)
+ * * n<= 2^21
+ * prototype problem: HDU1402
+ **/
+
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
@@ -21,7 +31,7 @@ T quickpow(const T& a, const unsigned &n, const int P)
     return ans;
 }
 
-/// len: must be 2^k and larger than length of x
+/// len: must be 2^k and not smaller than length of x
 /// note that len of NTT must be equal to len of INTT
 void NTT(int x[], const int len, const int &on)
 {
