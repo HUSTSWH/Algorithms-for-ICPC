@@ -4,6 +4,7 @@
 
 using namespace std;
 #define root 1,0,n
+#define self node,s,t
 #define lson node<<1,s,m
 #define rson node<<1|1,m,t
 
@@ -37,11 +38,11 @@ void updataDown(int node, int s, int t)
 
 void update(int node, int s, int t, int l ,int r, int v)
 {
-    updateDown(node, s, t);
+    updateDown(self);
     if(t<=l || r<=s) return;
     if(l<=s && t<=r){
         lazy[node]+=v;
-        updateDown(node);
+        updateDown(self);
         return;
     }
     int m = (s+t)>>1;
@@ -52,7 +53,7 @@ void update(int node, int s, int t, int l ,int r, int v)
 
 int query(int node, int s, int t, int l ,int r)
 {
-    updateDown(node, s, t);
+    updateDown(self);
     if(t<=l || r<=s) return inf;
     if(l<=s && t<=r) return seg[node];
     int m = (s+t) >> 1;
