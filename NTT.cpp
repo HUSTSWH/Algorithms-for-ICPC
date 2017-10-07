@@ -17,17 +17,19 @@ const int modn = (479<<21)+1;
 const int maxn = 1<<17;
 
 #define mod(a) ((((a)%modn)+modn)%modn)
+typedef long long LL;
 
-int a[maxn], b[maxn];
+LL a[maxn], b[maxn];
 char s[maxn];
 
-/// note that a should be a long long if a*a may exceed int
-template<typename T>
-T quickpow(const T& a, const unsigned &n, const int P)
+LL quickpow(LL base, LL n, const LL &P)
 {
-    if(n==1) return a;
-    T ans = quickpow(a*a%P, n>>1, P);
-    if(n&1) ans = ans * a % P;
+    LL ans = 1;
+    while(n) {
+        if(n&1) ans = ans*base%P;
+        base = base*base%P;
+        n >>= 1;
+    }
     return ans;
 }
 
@@ -39,8 +41,9 @@ inline long long multi(long long x,long long y,long long P)
 
 /// len: must be 2^k and not smaller than length of x
 /// note that len of NTT must be equal to len of INTT
-void NTT(int x[], const int len, const int &on)
+void NTT(LL x[], const int &len, const int &on)
 {
+    
     for(int i=1, j=len/2; i<len-1; i++) {
         if(i<j) swap(x[i], x[j]);
         int k = len/2;
@@ -50,31 +53,36 @@ void NTT(int x[], const int len, const int &on)
         }
         if(j<k) j += k;
     }
+    int pos=0;
     for(int k=1; k<len; k<<=1) {
         // complex<double> wm(cos(PI/k), sin(PI/k)*on);
-        long long wm = quickpow(g, (modn-1)/k/2, modn);
         for(int i=0; i<len; i+=2*k) {
             // complex<double> w(1.0,0.0);
             long long w = 1;
             for(int j=0; j<k; j++) {
-                int u = x[i+j];
-                int t = mod(w*x[i+j+k]);
-                x[i+j] = mod(u+t);
-                x[i+j+k] = mod(u-t);
-                w = mod(w*wm);
+                long long u = x[i+j];
+                long long t = w*x[i+j+k]%modn;
+                x[i+j] = (u+t)%modn;
+                x[i+j+k] = (u-t+modn)%modn;
+                w = w*wm[pos]%modn;
             }
         }
+        pos++;
     }
     if(on == -1) {
         reverse(x+1, x+len);
-        long long inv = quickpow(1LL*len, modn-2, modn);
+        long long inv = quickpow(len, modn-2, modn);
         for(int i=0; i<len; i++)
-            x[i] = mod(inv*x[i]);
+            x[i] = inv*x[i]%modn;
     }
 }
 
 int main()
 {
+    // DO NOT MISS THIS LINE!!!
+    for(int i=0; (1<<i)<maxn; i++)
+        wm[i] = quickpow(g, modn>>(i+1), modn);
+    
     while(scanf("%s", s)!= EOF) {
         int l1 = strlen(s);
         reverse(s, s+l1);
@@ -95,7 +103,7 @@ int main()
         NTT(a, n, 1);
         NTT(b, n, 1);
         for(int i=0; i<n; i++)
-            a[i] = mod(1LL*a[i]*b[i]); // NOTE: a[i]*b[i] may exceed INT_MAX!!
+            a[i] = a[i]*b[i]%modn; // NOTE: a[i]*b[i] may exceed INT_MAX!!
         NTT(a, n, -1);
         int l = 0;
         for(int i=0; i<n; i++) {
@@ -119,5 +127,7 @@ prime number:
   3   7  26  7<<26|1   = 469762049
   3 119  23  119<<23|1 = 998244353
   3 479  21  479<<21|1 = 1004535809
+ 31  15  27  15<<27|1  = 2013265921
+  3  17  27  17<<27|1  = 2281701377
   5  27  56  27<<56|1  = 1945555039024054273
   **/
