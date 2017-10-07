@@ -31,6 +31,12 @@ T quickpow(const T& a, const unsigned &n, const int P)
     return ans;
 }
 
+inline long long multi(long long x,long long y,long long P)
+{
+    long long tmp=(x*y-(long long)((long double)x/P*y+1.0e-8)*P);
+    return tmp<0 ? tmp+P : tmp;
+}
+
 /// len: must be 2^k and not smaller than length of x
 /// note that len of NTT must be equal to len of INTT
 void NTT(int x[], const int len, const int &on)
