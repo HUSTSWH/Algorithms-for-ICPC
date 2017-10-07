@@ -46,24 +46,24 @@ void NTT(int x[], const int len, const int &on)
     }
     for(int k=1; k<len; k<<=1) {
         // complex<double> wm(cos(PI/k), sin(PI/k)*on);
-        int wm = quickpow(g, (modn-1)/k/2, modn);
+        long long wm = quickpow(g, (modn-1)/k/2, modn);
         for(int i=0; i<len; i+=2*k) {
             // complex<double> w(1.0,0.0);
-            int w = 1;
+            long long w = 1;
             for(int j=0; j<k; j++) {
                 int u = x[i+j];
-                int t = mod(1LL*w*x[i+j+k]);
+                int t = mod(w*x[i+j+k]);
                 x[i+j] = mod(u+t);
                 x[i+j+k] = mod(u-t);
-                w = mod(1LL*w*wm);
+                w = mod(w*wm);
             }
         }
     }
     if(on == -1) {
         reverse(x+1, x+len);
-        int inv = quickpow(1LL*len, modn-2, modn);
+        long long inv = quickpow(1LL*len, modn-2, modn);
         for(int i=0; i<len; i++)
-            x[i] = mod(1LL*x[i]*inv);
+            x[i] = mod(inv*x[i]);
     }
 }
 
@@ -83,12 +83,13 @@ int main()
         // get the minimum of 2^k which is greater than length of a or b
         int n = 1<<(8*sizeof(int) - __builtin_clz(max(l1, l2) ) ); 
         n<<=1;  //DO NOT MISS IT!!!
+        
         fill(a+l1, a+n, 0);
         fill(b+l2, b+n, 0);
         NTT(a, n, 1);
         NTT(b, n, 1);
         for(int i=0; i<n; i++)
-            a[i] = mod(1LL*a[i]*b[i]);
+            a[i] = mod(1LL*a[i]*b[i]); // NOTE: a[i]*b[i] may exceed INT_MAX!!
         NTT(a, n, -1);
         int l = 0;
         for(int i=0; i<n; i++) {
@@ -105,3 +106,12 @@ int main()
     return 0;
 }
 
+/**
+prime number:
+  g   r   k             modn
+  3   1  16  1<<16|1   = 65537
+  3   7  26  7<<26|1   = 469762049
+  3 119  23  119<<23|1 = 998244353
+  3 479  21  479<<21|1 = 1004535809
+  5  27  56  27<<56|1  = 1945555039024054273
+  **/
