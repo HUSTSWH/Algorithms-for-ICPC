@@ -10,7 +10,7 @@ Memory cost: maxn * (6 + 2 * maxh) * sizeof(int) //maxn=50000: cost = 8.0MB
 using namespace std;
 const int maxn = 50000+10, maxh = 17;//2^(maxh-1) >= maxn
 int rf[maxn], depth[maxn];
-int seq[maxn * 2], rmq[maxn * 2][maxh];
+int seq[maxn<<1], rmq[maxn<<1][maxh];
 int pos;
 vector<int > vec[maxn];
 

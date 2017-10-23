@@ -85,8 +85,7 @@ int query(vector<pstnode *> &pls, vector<pstnode *> &prs, const int &s, const in
         for(size_t i=0; i<prs.size(); i++)
             prs[i] = prs[i]->lson;
         return query(pls, prs, s, m, k);
-    }
-    else {
+    } else {
         for(size_t i=0; i<pls.size(); i++)
             pls[i] = pls[i]->rson;
         for(size_t i=0; i<prs.size(); i++)
@@ -103,7 +102,7 @@ char qcmd[maxn];
 int main()
 {
     int n, m;
-	vector<pstnode* > va, vb;
+    vector<pstnode* > va, vb;
     while(scanf("%d %d",&n,&m)!=EOF){
         for(int i=0; i<n; i++)
             scanf("%d",arr+i);
@@ -149,7 +148,7 @@ int main()
                     break;
                 case 'Q':
                     a = qa[i], b = qb[i], c = qc[i];
-					va.clear(); vb.clear();
+                    va.clear(); vb.clear();
                     va.push_back(layer[a-1]); vb.push_back(layer[b]);
                     for(int j = a-1; j; j-=(j&-j))
                         va.push_back(BIT[j]);

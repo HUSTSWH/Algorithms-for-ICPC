@@ -22,10 +22,10 @@ T gcd(T a, T b)
 template<typename T>
 T quickpow(const T &v, const unsigned long long &n)
 {
-	if(n==1) return v;
-	T temp = quickpow(v*v, n>>1);
-	if(n&1) return temp * v;
-	else return temp;
+    if(n==1) return v;
+    T temp = quickpow(v*v, n>>1);
+    if(n&1) return temp * v;
+    else return temp;
 }
 
 template<typename T>
@@ -80,8 +80,8 @@ public:
             for(int j=0; j<m; j++)
                 for(int k=0; k<t.m; k++){
                     ans.data[i][k] += data[i][j]*t.data[j][k];
-					ans.data[i][k] = mod(ans.data[i][k]);
-				}
+                    ans.data[i][k] = mod(ans.data[i][k]);
+                }
         return ans;
     }
 private:
@@ -110,7 +110,7 @@ private:
 public:
     vector<bool> solve(matrix& ans, matrix& b)
     {
-		ans.resize(m, b.m+1);
+        ans.resize(m, b.m+1);
         vector<bool> invalid(b.m);
         int xi = 0;
         for(int yi=0; yi<m; yi++){
@@ -119,9 +119,9 @@ public:
                     data[xi].swap(data[xj]);
                     b[xi].swap(b[xj]);
                 }
-		    if(data[xi][yi] == 0) continue;
+            if(data[xi][yi] == 0) continue;
             for(int xj=xi+1; xj<n; xj++){
-				if(data[xj][yi] == 0) continue;
+                if(data[xj][yi] == 0) continue;
                 eliminate(b[xj], b[xi], 0, b.m, data[xj][yi], data[xi][yi]);
                 eliminate(data[xj], data[xi], yi, m, data[xj][yi], data[xi][yi]);
                 // reduce(data[xj], yi, m, b[xj]);
@@ -137,7 +137,7 @@ public:
             int yi;
             for(yi=0; yi<m && data[xi][yi]==0; yi++);
             for(int xj=0; xj<xi; xj++){
-				if(data[xj][yi] == 0) continue;
+                if(data[xj][yi] == 0) continue;
                 eliminate(b[xj], b[xi], 0, b.m, data[xj][yi], data[xi][yi]);
                 eliminate(data[xj], data[xi], xj, yi+1, data[xj][yi], data[xi][yi]);
                 // reduce(data[xj], xj, yi, b[xj]);
@@ -157,11 +157,11 @@ private:
 int main()
 {
     int n,m;
-	matrix<int> A(n,m),B(n,1);//1 means the number of system is 1
-	// set the value of A & B
-	...
-	// finish
-	matrix<int> ans;
-	vector<bool> invalid = A.solve(ans, B);
+    matrix<int> A(n,m),B(n,1);//1 means the number of system is 1
+    // set the value of A & B
+    ...
+    // finish
+    matrix<int> ans;
+    vector<bool> invalid = A.solve(ans, B);
     return 0;
 }
