@@ -1,17 +1,6 @@
 #include <cstdio>
 #include <cstring>
-#include <cmath>
-#include <cassert>
-#include <iostream>
 #include <algorithm>
-#include <functional>
-#include <vector>
-#include <list>
-#include <string>
-#include <queue>
-#include <stack>
-#include <map>
-#include <complex>
 using namespace std;
 typedef long long LL;
 
@@ -23,8 +12,8 @@ namespace num_theory {
     int sieve()
     {
         int pos = 0;
-        phi[1] = 1;
-        miu[1] = 1;
+        phi[1] = 1;// NOTE: phi1 equals 1
+        miu[1] = 1;// NOTE: miu1 equals 1
         for(int i=2; i<maxn; i++) {
             if(!npri[i]) {
                 prime[pos++] = i;

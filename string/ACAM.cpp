@@ -70,8 +70,8 @@ int AC(const char s[])
         for(int pp=wordcnt[pos]?pos:drop[pos]; pp; pp=drop[pp]){
             // operation when match happens
             
-            // Note: if one target string is required to report a match once, use "break"
-            if(visited[wordtag[pp]]) continue; 
+            // Note: break preferred for higher speed
+            if(visited[wordtag[pp]]) break; 
             
             ans += wordcnt[pp];
             visited[wordtag[pp]] = 1;
