@@ -10,10 +10,8 @@ namespace SEG
 #define rson node<<1|1,m,t
     int seg[maxn<<2], lazy[maxn<<2];
     int pos;
-    void resize(int n) { pos = n; }
     void build(int arr[], int node=1, int s=0, int t=pos) {
-        if(s==t) return;
-        lazy[node] = 0;
+        lazy[node] = 0; // NOTE: this line should not be missed!
         if(t-s==1) {
             seg[node] = arr[s];
             return;
@@ -22,6 +20,11 @@ namespace SEG
         build(arr, lson);
         build(arr, rson);
         seg[node] = min(seg[node<<1], seg[node<<1|1]);
+    }
+    void init(int arr[], int n)
+    {
+        pos = n;
+        build(arr);
     }
     inline void pushdown(int node, int s, int t)
     {
@@ -38,26 +41,22 @@ namespace SEG
         if(l<=s && t<=r) return seg[node];
         if(t<=l || r<=s) return 0x3f3f3f3f;
         int m=(s+t)>>1;
-        return std::min(query(l, r, lson), query(l, r, rson));
+        return min(query(l, r, lson), query(l, r, rson));
     }
     void add(int l, int r, int val, int node=1, int s=0, int t=pos)
     {
-        if(l==r) return;
         if(l<=s && t<=r) {
             lazy[node] += val;
             pushdown(self);
             return;
         }
         pushdown(self);
-        if(t<=l || r<=s) return;
+        if(r<=s || t<=l) return;
         int m=(s+t)>>1;
         add(l, r, val, lson);
         add(l, r, val, rson);
         seg[node] = min(seg[node<<1], seg[node<<1|1]);
     }
-#undef self
-#undef lson
-#undef rson
 };
 
 int main()

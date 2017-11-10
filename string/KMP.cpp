@@ -6,36 +6,28 @@ const int maxn = 1e6+10, maxm = 1e3+10;
 int next[maxn];
 int s[maxn];
 
-void getnext(const char p[], int next[])
+// NOTE: p[l] is assumed to be '\0' and not equal to any char in string
+void getnext(char p[], int next[])
 {
-    next[0] = -1;
-    next[1] = 0;
-    int l = strlen(p);
-    for(int i=1; i<l; i++){
-        next[i+1] = 0;
-        for(int j=next[i]; j>=0; j=next[j])
-            if(p[i] == p[j]){
-                next[i+1] = j+1;
-                break;
-            }
+    next[0] = -1; next[1] = 0;
+    int i=1, j=0;
+    while(p[i]) {
+        while(~j && p[i]!=p[j]) j = next[j];
+        i++; j++;
+        next[i] = j;
     }
 }
 
-// NOTE: t[l] should be different from any character in t
-int match(const char p[], const int next[], const char t[], int s[])
+// NOTE: t[l] is assumed to be '\0'.
+// If this matches any char in pattern string, it may arouse a wrong result!
+int match(char p[], int next[], char t[], int s[])
 {
-    int l = strlen(t);
-    int ans = 0;
-    int j = 0;
-    for(int i=0; i<l; i++){
-        int k=j;
-        for(j=0; k>=0; k=next[k])
-            if(t[i] == p[k]){
-                j = k+1;
-                break;
-            }
-        if(p[j] == '\0')
-            s[ans++] = i+1-j;
+    int ans=0;
+    int i=0, j=0;
+    while(t[i]) {
+        while(~j && t[i]!=p[j]) j = next[j];
+        i++; j++;
+        if(!p[j]) s[ans++] = i-j;
     }
     return ans;
 }

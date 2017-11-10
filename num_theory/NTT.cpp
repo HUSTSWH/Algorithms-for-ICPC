@@ -16,9 +16,6 @@ typedef long long LL;
 const LL g = 3, modn = (479<<21)+1;
 const int maxn = 1<<17;
 
-#define mod(a) ((((a)%modn)+modn)%modn)
-
-
 LL a[maxn], b[maxn];
 char s[maxn];
 
@@ -33,9 +30,9 @@ LL quickpow(LL base, LL n, const LL &P)
     return ans;
 }
 
-inline long long multi(long long x,long long y,long long P)
+inline LL multi(LL x,LL y,LL P)
 {
-    long long tmp=(x*y-(long long)((long double)x/P*y+1.0e-8)*P);
+    LL tmp=(x*y-(LL)((long double)x/P*y+1.0e-8)*P);
     return tmp<0 ? tmp+P : tmp;
 }
 
@@ -60,8 +57,10 @@ void ntt(LL x[], const int &len, const int &on)
             for(int j=0; j<k; j++) {
                 LL u = x[i+j];
                 LL t = w*x[i+j+k]%modn;
-                x[i+j] = (u+t)%modn;
-                x[i+j+k] = (u-t+modn)%modn;
+                x[i+j] = u+t;
+                if(x[i+j]>=modn) x[i+j] -= modn;
+                x[i+j+k] = u-t;
+                if(x[i+j+k]<0) x[i+j+k] += modn;
                 w = w*wm%modn;
             }
         }

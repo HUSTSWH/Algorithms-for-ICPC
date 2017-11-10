@@ -48,8 +48,8 @@ void solve(Type *a[], const int &m, Type ans[], Type b[])
             // b[j] = mod(b[j]);
             // b[j] = b[j]^a[j];
             eliminate(a[j], a[i], m, a[j][i], a[i][i]);
-			Type val_a=a[j][i], val_b=a[i][i];
-			for(int k=0; k<m; k++){
+            Type val_a=a[j][i], val_b=a[i][i];
+            for(int k=0; k<m; k++){
                 a[j][k] -= a[i][k]*val_a/val_b;
                 // a[j][k] = a[j][k]*val_b - a[i][k]*val_a;
                 // a[j][k] = mod(a[j][k]);
