@@ -7,7 +7,6 @@
  * * n<= 2^21
  * prototype problem: HDU1402
  ******/
-
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
@@ -35,6 +34,7 @@ inline LL multi(LL x,LL y,LL P)
     LL tmp=(x*y-(LL)((long double)x/P*y+1.0e-8)*P);
     return tmp<0 ? tmp+P : tmp;
 }
+inline int nor(int x) { return x<0?x+modn:x<modn?x:x-modn; }
 
 /// len: must be 2^k and not smaller than length of x
 /// note that len of NTT must be equal to len of INTT
@@ -57,10 +57,8 @@ void ntt(LL x[], const int &len, const int &on)
             for(int j=0; j<k; j++) {
                 LL u = x[i+j];
                 LL t = w*x[i+j+k]%modn;
-                x[i+j] = u+t;
-                if(x[i+j]>=modn) x[i+j] -= modn;
-                x[i+j+k] = u-t;
-                if(x[i+j+k]<0) x[i+j+k] += modn;
+                x[i+j] = nor(u+t);
+                x[i+j+k] = nor(u-t);
                 w = w*wm%modn;
             }
         }

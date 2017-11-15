@@ -1,12 +1,11 @@
 /*******
- *An implement of Aho-Corasick automaton(AC-AM).
- *Time complexity: O( L(T) + sum(L(Pi)) + m ) in which:
- *P: template string
- *T: target string
- *m: number of successive matches
- *prototype problem: HDU2222
+ * An implement of Aho-Corasick automaton(AC-AM).
+ * Time complexity: O( |T| + sum(|Pi|) + m ) in which:
+ * P: pattern string
+ * T: text string
+ * m: number of successive matches
+ * prototype problem: HDU2222
  *******/
-
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
@@ -24,10 +23,7 @@ int wordcnt[maxn], wordtag[maxn];
 bool visited[10000+10];
 
 inline int alloc() { return tpos++; }
-inline int getson(int &son)
-{
-    return son?son:son=alloc();
-}
+inline int getson(int &x) { return x?x:x=alloc(); }
 
 void insert(const char s[], const int tag)
 {
@@ -45,10 +41,10 @@ void ACinit()
     for(int i=0; i<sigma; i++)
         if(trie[0][i])
             q[qe++] = trie[0][i];
-    while(qf<qe){
+    while(qf<qe) {
         int x = q[qf++];
         int xf = drop[x];
-        for(int i=0; i<sigma; i++){
+        for(int i=0; i<sigma; i++) {
             if(!trie[x][i]){
                 trie[x][i] = trie[xf][i];
                 continue;
@@ -56,18 +52,18 @@ void ACinit()
             drop[trie[x][i]] = trie[xf][i];
             q[qe++] = trie[x][i];
         }
-        drop[x] = wordcnt[xf]?xf:drop[xf];
         // compress fail pointer to contain only wordtail
         // Very important! This operation reduces time complexity.
+        drop[x] = wordcnt[xf]?xf:drop[xf];
     } 
 }
 
 int AC(const char s[])
 {
     int pos = 0, ans = 0;
-    for(int i=0; s[i]; i++){
+    for(int i=0; s[i]; i++) {
         pos=trie[pos][s[i]-'a'];
-        for(int pp=wordcnt[pos]?pos:drop[pos]; pp; pp=drop[pp]){
+        for(int pp=wordcnt[pos]?pos:drop[pos]; pp; pp=drop[pp]) {
             // operation when match happens
             
             // Note: break preferred for higher speed

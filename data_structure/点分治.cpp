@@ -1,109 +1,115 @@
 /*************
- * Poj 1742
+ * HDU 5909
  * 点分治模板
- * 1.求直径（函数：getd）
+ * 1.求直径（函数：getdiam）
  * 2.处理当前点的情况（函数：solve）
  * 3.分治
  * 时间复杂度： O(nlogn*P)(P为处理操作的复杂度)
  *************/
 #include <cstdio>
 #include <cstring>
+#include <cmath>
+#include <cassert>
+#include <iostream>
 #include <algorithm>
 #include <functional>
+#include <limits>
+#include <vector>
+#include <list>
+#include <string>
+#include <queue>
+#include <stack>
+#include <map>
+#include <complex>
 using namespace std;
 typedef long long LL;
 typedef unsigned long long ULL;
-const LL modn = 1e9+7;
-const int maxn = 1e5+7;
+#define zeros(a,n) memset(a,0,(n)*sizeof(a[0]))
+const int modn = 1e9+7;
+const int maxn = 1024+9;
 
-vector<pair<int, int> > edge[maxn];
-int dep[maxn], fa[maxn];
+vector<int> edge[maxn];
+int dp[maxn][maxn];
+int val[maxn];
+int ans[maxn];
 bool vis[maxn];
-int n,m;
+int n, m;
 
-void getd(int x, int& ans)
+inline int nor(int x) { return x<0?x+modn:x<modn?x:x-modn; }
+int getdiam(int x, bool on)
 {
+    static int q[maxn], fa[maxn];
+    int qf=0, qe=0;
+    fa[x] = 0;
+    q[qe++] = x;
+    while(qf<qe) {
+        x = q[qf++];
+        int l = edge[x].size();
+        for(int i=0; i<l; i++) {
+            const int &y = edge[x][i];
+            if(vis[y] || fa[x]==y) continue;
+            fa[y] = x;
+            q[qe++] = y;
+        }
+    }
+    if(on) {
+        int cnt = 0;
+        for(int i=x; i; i=fa[i]) cnt++;
+        for(int i=cnt>>1; i; i--) x = fa[x];
+    }
+    return x;
+}
+void solve(int x, int f=0)
+{
+    const int &v = val[x];
+    for(int i=0; i<m; i++)
+        dp[x][i] = dp[f][i^v];
+
     int l = edge[x].size();
-    if(dep[x]>dep[ans]) ans = x;
     for(int i=0; i<l; i++) {
-        const int &y = edge[x][i].first;
-        if(vis[y] || fa[x]==y) continue;
-        fa[y] = x;
-        dep[y] = dep[x]+1;
-        getd(y, ans);
+        const int &y = edge[x][i];
+        if(vis[y] || f==y) continue;
+        solve(y, x);
+        for(int i=0; i<m; i++)
+            dp[x][i] = nor(dp[x][i] + dp[y][i]);
     }
 }
-
-int dist[maxn], dpos;
-void getdist(int x, int d)
+void divide(int x)
 {
-    dist[dpos++] = d;
+    x = getdiam(x, 0);
+    x = getdiam(x, 1);
+    vis[x] = true;
+    solve(x);
     int l = edge[x].size();
-    for(int i=0; i<l; i++) {
-        const int &y = edge[x][i].first;
-        if(vis[y] || fa[x]==y) continue;
-        fa[y] = x;
-        getdist(y, d+edge[x][i].second);
-    }
-}
-
-int solve(int node, int d)
-{
-    int ans = 0;
-    dpos = 0;
-    fa[node] = 0;
-    getdist(node, d);
-    sort(dist, dist+dpos);
-    int i=0, j=dpos-1;
-    while(i<j) {
-        while(dist[i]+dist[j]>m) j--;
-        if(i>=j) break;
-        ans += (j-i);
-        i++;
-    }
-    return ans;
-}
-
-void divide(int root, int& ans)
-{
-    dep[root] = 0;
-    fa[root] = 0;
-    getd(root, root);
-    dep[root] = 0;
-    fa[root] = 0;
-    getd(root, root);
-    int diam = dep[root];
-    for(diam/=2; diam; diam--)
-        root = fa[root];
-    vis[root] = true;
-    dist[root] = 0;
-    ans += solve(root, 0);
-    int l = edge[root].size();
-    for(int i=0; i<l; i++) {
-        const int &y = edge[root][i].first;
-        if(vis[y]) continue;
-        ans -= solve(y, edge[root][i].second);
-    }
-    for(int i=0; i<l; i++) {
-        const int &y = edge[root][i].first;
-        if(vis[y]) continue;
-        divide(y, ans);
-    }
+    for(int i=0; i<l; i++)
+        if(!vis[edge[x][i]])
+            divide(edge[x][i]);
 }
 
 int main()
 {
-    while(scanf("%d %d", &n, &m)!=EOF && n+m) {
-        memset(vis, 0, sizeof(vis));
+    int T;
+    scanf("%d", &T);
+    for(int cas=1; cas<=T; cas++) {
+        scanf("%d %d", &n, &m);
+        for(int i=1; i<=n; i++)
+            scanf("%d", val+i);
         for(int i=1; i<n; i++) {
-            int a,b,c;
-            scanf("%d %d %d", &a, &b, &c);
-            edge[a].push_back(make_pair(b,c));
-            edge[b].push_back(make_pair(a,c));
+            int a, b;
+            scanf("%d %d", &a, &b);
+            edge[a].push_back(b);
+            edge[b].push_back(a);
         }
-        int ans = 0;
-        divide(1, ans);
-        printf("%d\n", ans);
+        memset(dp[0], 0, sizeof(dp[0]));
+        dp[0][0] = 1;
+        zeros(vis, n+1);
+        divide(1);
+        zeros(ans, m);
+        for(int i=0; i<m; i++)
+            for(int j=1; j<=n; j++)
+                ans[i] = nor(ans[i] + dp[j][i]);
+        for(int i=0; i<m; i++)
+            printf("%d%c", ans[i], " \n"[i+1==m]);
         for(int i=1; i<=n; i++)
             edge[i].clear();
     }
